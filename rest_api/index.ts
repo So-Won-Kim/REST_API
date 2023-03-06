@@ -1,51 +1,27 @@
-import express from "express"
+import express, { Request, Response } from 'express';
+import multer from 'multer';
+import bodyParser from 'body-parser';
 
-console.log('hell Daniel')
+const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
 
-const app = express()
-const PORT = 3005;
+// Update package route
+app.put('/package/:name', (req: Request, res: Response) => {
+  // Update package logic here
 
-app.use(express.urlencoded({extended: true})); 
-app.use(express.json());   
+});
 
-type Student = {
-    name: string;
-    grade: number;
-}
+// Upload package route
+const upload = multer({ dest: 'uploads/' });
+app.post('/package', upload.single('package'), (req: Request, res: Response) => {
+  // Upload package logic here
+});
 
-const students: Student[] = [
-    {name: "HJ", grade: 10},
-    {name: "Joseph", grade: 11}
-]
+// Download package route
+app.get('/package/:name', (req: Request, res: Response) => {
+  // Download package logic here
+});
 
-app.get("/", (req, res) => {
+app.listen(3000, () => console.log('Server listening on port 3000'));
+//npm install --save @types/multer
 
-    res.send("hello")
-})
-
-app.put("/student")
-app.delete("/student")
-
-app.get("/student", (req, res) => {
-    res.send(students)
-})
-
-app.post("/student", (req, res) => {
-    const student = req.body
-    console.log(student)
-    students.push(student)
-
-    res.status(200).send()
-})
-
-
-app.listen(PORT, () => {
-    console.log(`Server is listening to the port: ${PORT}`)
-    console.log(`http://localhost:${PORT}`)
-    console.log(`http://localhost:${PORT}/student`)
-})
-// curl -X POST http://localhost:3000/student -d '{"name": "MJ", "grade": 12}' -H 'Content-Type: application/json'
-//  npm install body-parser
-
-
-// [{"name":"HJ","grade":10},{"name":"Joseph","grade":11},{"{name: \"MJ\", grade: 12}":""}]
